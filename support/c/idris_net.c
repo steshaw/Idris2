@@ -190,7 +190,10 @@ void* idrnet_create_sockaddr() {
 int idrnet_accept(int sockfd, void* sockaddr) {
     struct sockaddr* addr = (struct sockaddr*) sockaddr;
     socklen_t addr_size = sizeof(struct sockaddr_storage);
-    return accept(sockfd, addr, &addr_size);
+    Sdeactivate_thread();
+    int result = accept(sockfd, addr, &addr_size);
+    Sactivate_thread();
+    return result;
 }
 
 int idrnet_send(int sockfd, char* data) {
